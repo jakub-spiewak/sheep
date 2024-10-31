@@ -39,6 +39,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-security")
 //    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 //    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
 //    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")

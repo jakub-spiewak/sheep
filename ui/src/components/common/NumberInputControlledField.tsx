@@ -14,6 +14,7 @@ export const NumberInputControlledField = <T extends FieldValues>(props: NumerIn
     const {control, name, inputRootProps = {}, fieldProps = {}} = props;
     const {field, fieldState} = useController({control, name})
     const error = fieldState.error
+    console.log(field.value)
     return (
         <Field
             {...fieldProps}
@@ -24,9 +25,9 @@ export const NumberInputControlledField = <T extends FieldValues>(props: NumerIn
                 {...inputRootProps}
                 disabled={field.disabled}
                 name={field.name}
-                value={field.value}
+                value={inputRootProps.formatOptions?.style === 'percent' ? (field.value * 100).toFixed(2) : field.value}
                 onValueChange={({valueAsNumber}) => {
-                    field.onChange(valueAsNumber)
+                    field.onChange(valueAsNumber);
                 }}
             >
                 <NumberInputField

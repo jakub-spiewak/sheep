@@ -5,8 +5,8 @@ import {Field} from "@/components/ui/field.tsx";
 import {NumberInputControlledField} from "./NumberInputControlledField.tsx";
 import {NativeSelectField, NativeSelectRoot} from "@/components/ui/native-select.tsx";
 import {HasEstimatedAmount} from "@/util/types";
+import {currency} from "@/util/commons.ts";
 
-const currency = "PLN";
 
 const estimatedAmountTypeOptions: { value: EstimatedAmountTypeEnum; label: string }[] = [
     {value: "RANGE", label: "Range"},
@@ -213,8 +213,7 @@ const FieldFactory = (props: FieldFactoryProps) => {
 export const EstimatedAmountField = (props: EstimatedAmountFieldProps) => {
     const {control} = props;
 
-    const {field: typeField} = useController({control, name: 'estimatedAmount.type'})
-
+    const {field: typeField} = useController({control, name: 'estimatedAmount.type', shouldUnregister: true})
     const type = typeField.value
 
     return (

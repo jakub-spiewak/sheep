@@ -15,9 +15,16 @@ import {Field} from "@/components/ui/field.tsx";
 import {HStack, Input, Stack,} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {isNullOrEmpty} from "@/util/functions.ts";
-import {ExpenseBlueprintCreateRequest, FrequencyEnum} from "@/redux/generated/redux-api.ts";
+import {
+    ExpenseBlueprintCreateRequest,
+    ExpenseBlueprintUpdateRequest,
+    FrequencyEnum,
+    useCreateExpenseBlueprintMutation,
+    useUpdateExpenseBlueprintMutation
+} from "@/redux/generated/redux-api.ts";
 import {NativeSelectField, NativeSelectRoot} from "@/components/ui/native-select.tsx";
 import {EstimatedAmountField} from "@/components/common/EstimatedAmountField.tsx";
+import {useEffect} from "react";
 
 const frequencyOptions: { value: FrequencyEnum, label: string }[] = [
     {
@@ -38,62 +45,95 @@ const frequencyOptions: { value: FrequencyEnum, label: string }[] = [
     }
 ]
 
-export const NewExpenseBlueprintDialog = () => {
+const defaultValues: ExpenseBlueprintCreateRequest = {
+    name: '',
+    frequency: 'MONTHLY',
+    startDate: new Date().toISOString(),
+    endDate: undefined,
+    tags: [],
+    estimatedAmount: {
+        type: 'FIXED',
+        amount: 0.0,
+    }
+};
 
+interface ExpenseBlueprintDialogProps {
+    open: boolean;
+    setOpen: (value: boolean) => void;
+    valueToUpdate?: ExpenseBlueprintUpdateRequest & { id: string };
+}
+
+// TODO: zod validation
+export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
+    const {open, setOpen, valueToUpdate} = props
     const {
         register,
-        watch,
         control,
-        // setValue,
         handleSubmit,
+        watch,
         formState: {errors},
-        reset
+        reset,
     } = useForm<ExpenseBlueprintCreateRequest>({
         // resolver: zodResolver(newDataSchemaSchema),
-        defaultValues: {
-            name: '',
-            frequency: 'MONTHLY',
-            startDate: new Date().toISOString(),
-            endDate: undefined,
-            tags: [],
-            // estimatedAmount: {
-            //     type: 'VARIANCE_PERCENT',
-            //     amount: 0.0,
-            //     variancePercent: 0.6
-            // }
-            estimatedAmount: {
-                type: 'FIXED',
-                amount: 4.0,
-                // variancePercent: 0.6
-            }
+        resetOptions: {
+            keepDirtyValues: false
+        },
+        defaultValues
+    });
+    console.log(watch())
+
+    const [createExpenseBlueprint, createExpenseBlueprintResult] = useCreateExpenseBlueprintMutation()
+    const [updateExpenseBlueprint, updateExpenseBlueprintResult] = useUpdateExpenseBlueprintMutation()
+
+    useEffect(() => {
+        const {isSuccess, reset} = createExpenseBlueprintResult
+        if (isSuccess) {
+            setOpen(false);
+            reset()
         }
-    })
+    }, [createExpenseBlueprintResult, setOpen]);
+
+    useEffect(() => {
+        const {isSuccess, reset} = updateExpenseBlueprintResult
+        if (isSuccess) {
+            setOpen(false);
+            reset()
+        }
+    }, [updateExpenseBlueprintResult, setOpen]);
+
+
+    useEffect(() => {
+        if (valueToUpdate) {
+            reset(valueToUpdate);
+        }
+    }, [valueToUpdate, reset]);
+
+    useEffect(() => {
+        if (!open) {
+            reset(defaultValues);
+        }
+    }, [open, reset]);
 
     const onSubmit = (data: ExpenseBlueprintCreateRequest) => {
-        console.log(data)
-        reset({
-            name: 'cycek',
-            tags: [],
-            estimatedAmount: {
-                type: 'RANGE',
-                min: 69,
-                max: 420
-            },
-            frequency: 'YEARLY',
-        })
+        if (valueToUpdate) {
+            updateExpenseBlueprint({expenseBlueprintUpdateRequest: data, blueprintId: valueToUpdate.id})
+        } else {
+            createExpenseBlueprint({expenseBlueprintCreateRequest: data})
+        }
     }
-
-    console.log('all', watch('estimatedAmount'))
 
     return (
         <DialogRoot
             scrollBehavior={'inside'}
             size={'lg'}
+            open={open}
             onOpenChange={(e) => {
                 if (!e.open) {
                     reset()
                 }
-            }}>
+                setOpen(e.open)
+            }}
+        >
             <DialogBackdrop/>
             <DialogTrigger asChild>
                 <Button>
@@ -119,7 +159,7 @@ export const NewExpenseBlueprintDialog = () => {
                                     {...register('name')}
                                 />
                             </Field>
-                            <EstimatedAmountField control={control}/>
+                            {open && <EstimatedAmountField control={control}/>}
                             <Field
                                 label={'Frequency'}
                                 helperText={'How often the expense is expected to occur'}
@@ -160,6 +200,7 @@ export const NewExpenseBlueprintDialog = () => {
                         type={"submit"}
                         form={"main_form"}
                         disabled={!isNullOrEmpty(errors)}
+                        loading={createExpenseBlueprintResult.isLoading}
                     >
                         Save
                     </Button>

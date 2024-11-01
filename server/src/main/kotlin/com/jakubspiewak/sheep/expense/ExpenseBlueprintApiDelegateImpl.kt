@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 @Service
 class ExpenseBlueprintApiDelegateImpl(private val repository: ExpenseBlueprintRepository) : ExpenseBlueprintApiDelegate {
     override fun createExpenseBlueprint(expenseBlueprintCreateRequest: ExpenseBlueprintCreateRequest): ResponseEntity<ExpenseBlueprintResponse> {
-        val expenseBlueprint = ExpenseBlueprint(
+        val expenseBlueprintDocument = ExpenseBlueprintDocument(
             id = ObjectId(),
             name = expenseBlueprintCreateRequest.name,
             estimatedAmount = expenseBlueprintCreateRequest.estimatedAmount,
@@ -20,9 +20,9 @@ class ExpenseBlueprintApiDelegateImpl(private val repository: ExpenseBlueprintRe
             endDate = expenseBlueprintCreateRequest.endDate,
             tags = expenseBlueprintCreateRequest.tags?.map { ObjectId(it) } ?: listOf()
         )
-        repository.save(expenseBlueprint)
+        repository.save(expenseBlueprintDocument)
 
-        val response = expenseBlueprint.toResponse()
+        val response = expenseBlueprintDocument.toResponse()
         return ResponseEntity.ok(response)
     }
 

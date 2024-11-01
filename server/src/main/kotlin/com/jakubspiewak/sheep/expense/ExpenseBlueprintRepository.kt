@@ -5,4 +5,4 @@ import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface ExpenseBlueprintRepository : MongoRepository<ExpenseBlueprint, ObjectId>
+interface ExpenseBlueprintRepository : MongoRepository<ExpenseBlueprintDocument, ObjectId>

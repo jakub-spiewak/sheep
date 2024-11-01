@@ -9,7 +9,7 @@ import {
     DialogRoot,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog.tsx"
 import {Button} from "@/components/ui/button.tsx";
 import {Field} from "@/components/ui/field.tsx";
 import {HStack, Input, Stack,} from "@chakra-ui/react";
@@ -25,6 +25,7 @@ import {
 import {NativeSelectField, NativeSelectRoot} from "@/components/ui/native-select.tsx";
 import {EstimatedAmountField} from "@/components/common/EstimatedAmountField.tsx";
 import {useEffect} from "react";
+import {TagField} from "@/components/common/TagField.tsx";
 
 const frequencyOptions: { value: FrequencyEnum, label: string }[] = [
     {
@@ -71,6 +72,7 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
         control,
         handleSubmit,
         watch,
+        setValue,
         formState: {errors},
         reset,
     } = useForm<ExpenseBlueprintCreateRequest>({
@@ -80,7 +82,6 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
         },
         defaultValues
     });
-    console.log(watch())
 
     const [createExpenseBlueprint, createExpenseBlueprintResult] = useCreateExpenseBlueprintMutation()
     const [updateExpenseBlueprint, updateExpenseBlueprintResult] = useUpdateExpenseBlueprintMutation()
@@ -188,7 +189,10 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
                                     />
                                 </Field>
                             </HStack>
-
+                            <TagField
+                                tags={watch('tags')}
+                                onChange={(tags) => setValue('tags', tags)}
+                            />
                         </Stack>
                     </form>
                 </DialogBody>
@@ -200,7 +204,7 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
                         type={"submit"}
                         form={"main_form"}
                         disabled={!isNullOrEmpty(errors)}
-                        loading={createExpenseBlueprintResult.isLoading}
+                        loading={createExpenseBlueprintResult.isLoading || updateExpenseBlueprintResult.isLoading}
                     >
                         Save
                     </Button>

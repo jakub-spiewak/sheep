@@ -1,26 +1,42 @@
 import {ColorModeButton} from "@/components/ui/color-mode.tsx";
 import {Heading, HStack, VStack} from "@chakra-ui/react";
-import {ExpenseBlueprintDialog} from "@/components/dataset/ExpenseBlueprintDialog.tsx";
-import {ExpenseBlueprintTable} from "@/components/dataset/ExpenseBlueprintTable.tsx";
+import {ExpenseBlueprintDialog} from "@/components/expense/blueprint/ExpenseBlueprintDialog.tsx";
+import {ExpenseBlueprintTable} from "@/components/expense/blueprint/ExpenseBlueprintTable.tsx";
 import {useEffect, useState} from "react";
-import {ExpenseBlueprintResponse} from "@/redux/generated/redux-api.ts";
+import {ExpenseBlueprintResponse, TagResponse} from "@/redux/generated/redux-api.ts";
+import {TagDialog} from "@/components/tag/TagDialog.tsx";
+import {TagTable} from "@/components/tag/TagTable.tsx";
 
 export const App = () => {
 
-    const [open, setOpen] = useState(false)
-    const [valueToEdit, setValueToEdit] = useState<ExpenseBlueprintResponse>()
+    const [isExpenseBlueprintDialogOpen, setIsExpenseBlueprintDialogOpen] = useState(false)
+    const [isTagDialogOpen, setIsTagDialogOpen] = useState(false);
+    const [expenseBlueprintToEdit, setExpenseBlueprintToEdit] = useState<ExpenseBlueprintResponse>()
+    const [tagToEdit, setTagToEdit] = useState<TagResponse>()
 
     useEffect(() => {
-        if (valueToEdit) {
-            setOpen(true);
+        if (expenseBlueprintToEdit) {
+            setIsExpenseBlueprintDialogOpen(true);
         }
-    }, [valueToEdit]);
+    }, [expenseBlueprintToEdit]);
 
     useEffect(() => {
-        if (open) {
-            setValueToEdit(undefined)
+        if (isExpenseBlueprintDialogOpen) {
+            setExpenseBlueprintToEdit(undefined)
         }
-    }, [open]);
+    }, [isExpenseBlueprintDialogOpen]);
+
+    useEffect(() => {
+        if (tagToEdit) {
+            setIsTagDialogOpen(true);
+        }
+    }, [tagToEdit]);
+
+    useEffect(() => {
+        if (isTagDialogOpen) {
+            setTagToEdit(undefined)
+        }
+    }, [isTagDialogOpen]);
 
     return (
         <VStack>
@@ -28,12 +44,20 @@ export const App = () => {
                 <Heading>Sheeeep</Heading>
                 <ColorModeButton/>
             </HStack>
-            <ExpenseBlueprintDialog
-                open={open}
-                setOpen={setOpen}
-                valueToUpdate={valueToEdit}
-            />
-            <ExpenseBlueprintTable onEdit={setValueToEdit}/>
+            <HStack>
+                <ExpenseBlueprintDialog
+                    open={isExpenseBlueprintDialogOpen}
+                    setOpen={setIsExpenseBlueprintDialogOpen}
+                    valueToUpdate={expenseBlueprintToEdit}
+                />
+                <TagDialog
+                    open={isTagDialogOpen}
+                    setOpen={setIsTagDialogOpen}
+                    valueToUpdate={tagToEdit}
+                />
+            </HStack>
+            <ExpenseBlueprintTable onEdit={setExpenseBlueprintToEdit}/>
+            <TagTable onEdit={setTagToEdit}/>
         </VStack>
     );
 }

@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Document(collection = "expenseBlueprint")
-data class ExpenseBlueprint(
+data class ExpenseBlueprintDocument(
     @Id
     val id: ObjectId,
     val name: String,

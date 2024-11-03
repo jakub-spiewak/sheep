@@ -4,6 +4,7 @@ import {ExpenseBlueprintFrequency} from "@/components/common/ExpenseBlueprintFre
 import {DateRangeCell} from "@/components/common/DateRangeCell.tsx";
 import {EstimatedAmountCell} from "@/components/common/EstimatedAmountCell.tsx";
 import {MdEdit} from "react-icons/md";
+import {TagsCell} from "@/components/common/TagsCell.tsx";
 
 interface ExpenseBlueprintTableProps {
     onEdit?: (value: ExpenseBlueprintResponse) => void;
@@ -20,6 +21,7 @@ export const ExpenseBlueprintTable = (props: ExpenseBlueprintTableProps) => {
                     <Table.ColumnHeader>Frequency</Table.ColumnHeader>
                     <Table.ColumnHeader>Date range</Table.ColumnHeader>
                     <Table.ColumnHeader>Estimated amount</Table.ColumnHeader>
+                    <Table.ColumnHeader>Tags</Table.ColumnHeader>
                     <Table.ColumnHeader>Actions</Table.ColumnHeader>
                 </Table.Row>
             </Table.Header>
@@ -32,6 +34,7 @@ export const ExpenseBlueprintTable = (props: ExpenseBlueprintTableProps) => {
                                 <Table.Cell><ExpenseBlueprintFrequency frequency={record.frequency}/></Table.Cell>
                                 <Table.Cell><DateRangeCell from={record.startDate} to={record.endDate}/></Table.Cell>
                                 <Table.Cell><EstimatedAmountCell estimatedAmount={record.estimatedAmount}/></Table.Cell>
+                                <Table.Cell><TagsCell tags={record.tags}/></Table.Cell>
                                 <Table.Cell>
                                     <IconButton
                                         size="sm"

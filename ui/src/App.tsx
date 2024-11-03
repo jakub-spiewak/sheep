@@ -21,7 +21,7 @@ export const App = () => {
     }, [expenseBlueprintToEdit]);
 
     useEffect(() => {
-        if (isExpenseBlueprintDialogOpen) {
+        if (!isExpenseBlueprintDialogOpen) {
             setExpenseBlueprintToEdit(undefined)
         }
     }, [isExpenseBlueprintDialogOpen]);
@@ -33,7 +33,7 @@ export const App = () => {
     }, [tagToEdit]);
 
     useEffect(() => {
-        if (isTagDialogOpen) {
+        if (!isTagDialogOpen) {
             setTagToEdit(undefined)
         }
     }, [isTagDialogOpen]);

@@ -182,7 +182,6 @@ const VariancePercentField = (props: EstimatedAmountFieldProps) => {
                     step: 0.01,
                     formatOptions: {
                         style: 'percent',
-
                     },
                 }}
             />

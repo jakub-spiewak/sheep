@@ -12,9 +12,11 @@ interface NumerInputFieldProps<T extends FieldValues> {
 
 export const NumberInputControlledField = <T extends FieldValues>(props: NumerInputFieldProps<T>) => {
     const {control, name, inputRootProps = {}, fieldProps = {}} = props;
-    const {field, fieldState} = useController({control, name})
+    const {field, fieldState} = useController({control, name, shouldUnregister: true})
     const error = fieldState.error
-    console.log(field.value)
+
+    const isPercent = inputRootProps.formatOptions?.style === 'percent'
+
     return (
         <Field
             {...fieldProps}
@@ -25,7 +27,7 @@ export const NumberInputControlledField = <T extends FieldValues>(props: NumerIn
                 {...inputRootProps}
                 disabled={field.disabled}
                 name={field.name}
-                value={inputRootProps.formatOptions?.style === 'percent' ? (field.value * 100).toFixed(2) : field.value}
+                value={isPercent ? ((field.value ?? 0) * 100).toFixed(0) : field.value}
                 onValueChange={({valueAsNumber}) => {
                     field.onChange(valueAsNumber);
                 }}

@@ -1,4 +1,4 @@
-import {Grid, GridItem, Icon, Text} from "@chakra-ui/react";
+import {Grid, GridItem, Text} from "@chakra-ui/react";
 import {IoIosInfinite} from "react-icons/io";
 
 interface DateRangeCellProps {
@@ -24,9 +24,7 @@ const DateItem = ({children}: HasChildrenProps) => {
                     ?
                     new Date(children).toLocaleDateString()
                     :
-                    <Icon>
-                        <IoIosInfinite/>
-                    </Icon>
+                    <IoIosInfinite/>
             }
         </GridItem>
     )

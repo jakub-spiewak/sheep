@@ -1,10 +1,15 @@
-import {ExpenseBlueprintResponse, useGetExpenseBlueprintsQuery} from "@/redux/generated/redux-api.ts";
-import {Center, IconButton, Spinner, Table, Text, VStack} from "@chakra-ui/react";
+import {
+    ExpenseBlueprintResponse,
+    useDeleteExpenseBlueprintMutation,
+    useGetExpenseBlueprintsQuery
+} from "@/redux/generated/redux-api.ts";
+import {Center, HStack, Spinner, Table, Text, VStack} from "@chakra-ui/react";
 import {ExpenseBlueprintFrequency} from "@/components/common/ExpenseBlueprintFrequency.tsx";
 import {DateRangeCell} from "@/components/common/DateRangeCell.tsx";
 import {EstimatedAmountCell} from "@/components/common/EstimatedAmountCell.tsx";
-import {MdEdit} from "react-icons/md";
+import {MdDelete, MdEdit} from "react-icons/md";
 import {TagsCell} from "@/components/common/TagsCell.tsx";
+import {Button} from "@/components/ui/button.tsx";
 
 interface ExpenseBlueprintTableProps {
     onEdit?: (value: ExpenseBlueprintResponse) => void;
@@ -12,7 +17,8 @@ interface ExpenseBlueprintTableProps {
 
 export const ExpenseBlueprintTable = (props: ExpenseBlueprintTableProps) => {
     const {onEdit} = props
-    const {data = [], isLoading} = useGetExpenseBlueprintsQuery()
+    const {data = [], isLoading} = useGetExpenseBlueprintsQuery();
+    const [deleteExpenseBlueprint, {isLoading: isDeleting, originalArgs}] = useDeleteExpenseBlueprintMutation();
     return (
         <Table.Root>
             <Table.Header>
@@ -36,12 +42,26 @@ export const ExpenseBlueprintTable = (props: ExpenseBlueprintTableProps) => {
                                 <Table.Cell><EstimatedAmountCell estimatedAmount={record.estimatedAmount}/></Table.Cell>
                                 <Table.Cell><TagsCell tags={record.tags}/></Table.Cell>
                                 <Table.Cell>
-                                    <IconButton
-                                        size="sm"
-                                        onClick={() => onEdit?.(record)}
-                                    >
-                                        <MdEdit/>
-                                    </IconButton>
+                                    <HStack>
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            p={0}
+                                            onClick={() => onEdit?.(record)}
+                                        >
+                                            <MdEdit/>
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            colorPalette="red"
+                                            variant="outline"
+                                            p={0}
+                                            loading={isDeleting && originalArgs?.blueprintId === record.id}
+                                            onClick={() => deleteExpenseBlueprint({blueprintId: record.id})}
+                                        >
+                                            <MdDelete/>
+                                        </Button>
+                                    </HStack>
                                 </Table.Cell>
                             </Table.Row>
                         )

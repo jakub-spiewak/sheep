@@ -54,13 +54,13 @@ const frequencyOptions: { value: FrequencyEnum, label: string }[] = [
 ]
 
 const defaultValues: ExpenseBlueprintCreateRequest = {
-    name: '',
-    frequency: 'MONTHLY',
-    startDate: new Date().toISOString(),
+    name: "",
+    frequency: "MONTHLY",
+    startDate: "",
     endDate: undefined,
     tags: [],
     estimatedAmount: {
-        type: 'FIXED',
+        type: "FIXED",
         amount: 0.0,
     }
 };
@@ -71,7 +71,6 @@ interface ExpenseBlueprintDialogProps {
     valueToUpdate?: ExpenseBlueprintUpdateRequest & { id: string };
 }
 
-// TODO: zod validation
 export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
     const {open, setOpen, valueToUpdate} = props
 
@@ -219,8 +218,8 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
 
     return (
         <DialogRoot
-            scrollBehavior={'inside'}
-            size={'lg'}
+            scrollBehavior={"inside"}
+            size={"lg"}
             open={open}
             onOpenChange={(e) => {
                 if (!e.open) {
@@ -244,20 +243,20 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
                     <form id={"main_form"} onSubmit={handleSubmit(onSubmit)}>
                         <Stack gap={4}>
                             <Field
-                                label={'Name'}
-                                helperText={'Name of the expense'}
+                                label={"Name"}
+                                helperText={"Name of the expense"}
                                 invalid={!!errors.name}
                                 errorText={errors.name?.message}
                             >
                                 <Input
-                                    placeholder={'Name'}
-                                    {...register('name')}
+                                    placeholder={"Name"}
+                                    {...register("name")}
                                 />
                             </Field>
                             {open && <EstimatedAmountField control={control}/>}
                             <Field
-                                label={'Frequency'}
-                                helperText={'How often the expense is expected to occur'}
+                                label={"Frequency"}
+                                helperText={"How often the expense is expected to occur"}
                             >
                                 <NativeSelectRoot>
                                     <NativeSelectField {...register("frequency")} items={frequencyOptions}/>
@@ -265,8 +264,8 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
                             </Field>
                             <HStack alignItems={"flex-start"}>
                                 <Field
-                                    label={'Start date'}
-                                    helperText={'When the expense is expected to start'}
+                                    label={"Start date"}
+                                    helperText={"When the expense is expected to start"}
                                     invalid={!!errors.startDate}
                                     errorText={errors.startDate?.message}
                                 >
@@ -276,8 +275,8 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
                                     />
                                 </Field>
                                 <Field
-                                    label={'End date'}
-                                    helperText={'When the expense is expected to end'}
+                                    label={"End date"}
+                                    helperText={"When the expense is expected to end"}
                                     invalid={!!errors.endDate}
                                     errorText={errors.endDate?.message}
                                 >
@@ -288,8 +287,8 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
                                 </Field>
                             </HStack>
                             <TagField
-                                tags={watch('tags')}
-                                onChange={(tags) => setValue('tags', tags)}
+                                tags={watch("tags")}
+                                onChange={(tags) => setValue("tags", tags)}
                             />
                         </Stack>
                     </form>

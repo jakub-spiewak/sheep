@@ -1,5 +1,5 @@
 import { api } from "../api";
-export const addTagTypes = [] as const;
+export const addTagTypes = ["expense-blueprint"] as const;
 const injectedRtkApi = api
   .enhanceEndpoints({
     addTagTypes,
@@ -52,6 +52,7 @@ const injectedRtkApi = api
         GetExpenseBlueprintsApiArg
       >({
         query: () => ({ url: `/expense-blueprint` }),
+        providesTags: ["expense-blueprint"],
       }),
       createExpenseBlueprint: build.mutation<
         CreateExpenseBlueprintApiResponse,
@@ -62,6 +63,7 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.expenseBlueprintCreateRequest,
         }),
+        invalidatesTags: ["expense-blueprint"],
       }),
       getExpenseBlueprintById: build.query<
         GetExpenseBlueprintByIdApiResponse,
@@ -70,6 +72,7 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/expense-blueprint/${queryArg.blueprintId}`,
         }),
+        providesTags: ["expense-blueprint"],
       }),
       updateExpenseBlueprint: build.mutation<
         UpdateExpenseBlueprintApiResponse,
@@ -80,6 +83,7 @@ const injectedRtkApi = api
           method: "PUT",
           body: queryArg.expenseBlueprintUpdateRequest,
         }),
+        invalidatesTags: ["expense-blueprint"],
       }),
       deleteExpenseBlueprint: build.mutation<
         DeleteExpenseBlueprintApiResponse,
@@ -89,6 +93,7 @@ const injectedRtkApi = api
           url: `/expense-blueprint/${queryArg.blueprintId}`,
           method: "DELETE",
         }),
+        invalidatesTags: ["expense-blueprint"],
       }),
       getIncomeEntries: build.query<
         GetIncomeEntriesApiResponse,

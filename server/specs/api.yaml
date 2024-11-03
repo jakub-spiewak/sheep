@@ -100,6 +100,8 @@ paths:
       summary: Retrieve All Expense Blueprints
       description: |
         Fetch a list of all expense blueprints. Blueprints are templates for recurring expense entries.
+      tags:
+        - expense-blueprint
       responses:
         '200':
           description: A list of expense blueprints retrieved successfully.
@@ -114,6 +116,8 @@ paths:
       summary: Create a New Expense Blueprint
       description: |
         Add a new expense blueprint to the system with the provided details, including name, estimated amount, frequency, start and end dates, and associated tags.
+      tags:
+        - expense-blueprint
       requestBody:
         required: true
         description: Expense blueprint details to be created.
@@ -137,6 +141,8 @@ paths:
       summary: Retrieve a Specific Expense Blueprint
       description: |
         Fetch detailed information of a specific expense blueprint identified by its unique ID.
+      tags:
+        - expense-blueprint
       responses:
         '200':
           description: Expense blueprint details retrieved successfully.
@@ -151,6 +157,8 @@ paths:
       summary: Update an Existing Expense Blueprint
       description: |
         Update the details of an existing expense blueprint using its unique ID. Only the provided fields will be updated.
+      tags:
+        - expense-blueprint
       requestBody:
         required: true
         description: Updated expense blueprint details.
@@ -172,6 +180,8 @@ paths:
       summary: Delete an Expense Blueprint
       description: |
         Remove an existing expense blueprint from the system using its unique ID.
+      tags:
+        - expense-blueprint
       responses:
         '204':
           description: Expense blueprint deleted successfully.
@@ -788,11 +798,11 @@ components:
       properties:
         type:
           $ref: '#/components/schemas/EstimatedAmountTypeEnum'
-#      anyOf:
-#        - $ref: '#/components/schemas/FixedAmount'
-#        - $ref: '#/components/schemas/RangeAmount'
-#        - $ref: '#/components/schemas/VarianceAmount'
-#        - $ref: '#/components/schemas/VariancePercent'
+      #      anyOf:
+      #        - $ref: '#/components/schemas/FixedAmount'
+      #        - $ref: '#/components/schemas/RangeAmount'
+      #        - $ref: '#/components/schemas/VarianceAmount'
+      #        - $ref: '#/components/schemas/VariancePercent'
       discriminator:
         propertyName: type
         mapping:

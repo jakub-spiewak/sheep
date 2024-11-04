@@ -28,7 +28,7 @@ export const ExpenseBlueprintTable = (props: ExpenseBlueprintTableProps) => {
                     <Table.ColumnHeader>Date range</Table.ColumnHeader>
                     <Table.ColumnHeader>Estimated amount</Table.ColumnHeader>
                     <Table.ColumnHeader>Tags</Table.ColumnHeader>
-                    <Table.ColumnHeader>Actions</Table.ColumnHeader>
+                    <Table.ColumnHeader textAlign={"end"}>Actions</Table.ColumnHeader>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -44,6 +44,7 @@ export const ExpenseBlueprintTable = (props: ExpenseBlueprintTableProps) => {
                                 <Table.Cell>
                                     <HStack>
                                         <Button
+                                            ml={'auto'}
                                             size="sm"
                                             variant="outline"
                                             p={0}

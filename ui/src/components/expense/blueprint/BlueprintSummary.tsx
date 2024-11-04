@@ -16,7 +16,7 @@ export const BlueprintSummary = () => {
                     value={data?.netBalance || 0}
                     formatOptions={{style: "currency", currency}}
                 />
-                <StatUpTrend>
+                <StatUpTrend disableIndicator>
                     <FormatNumber
                         value={(data?.totalExpenses || 0) / (data?.totalIncome || 0)}
                         style={"percent"}

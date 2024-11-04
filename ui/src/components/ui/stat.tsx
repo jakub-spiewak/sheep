@@ -48,11 +48,11 @@ export const StatValueText = forwardRef<HTMLDivElement, StatValueTextProps>(
   },
 )
 
-export const StatUpTrend = forwardRef<HTMLDivElement, BadgeProps>(
+export const StatUpTrend = forwardRef<HTMLDivElement, BadgeProps & {disableIndicator?: boolean}>(
   function StatUpTrend(props, ref) {
     return (
       <Badge colorPalette="green" gap="0" {...props} ref={ref}>
-        <ChakraStat.UpIndicator />
+          {!props.disableIndicator && <ChakraStat.UpIndicator />}
         {props.children}
       </Badge>
     )

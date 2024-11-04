@@ -26,7 +26,7 @@ export const IncomeBlueprintTable = (props: IncomeBlueprintTableProps) => {
                     <Table.ColumnHeader>Frequency</Table.ColumnHeader>
                     <Table.ColumnHeader>Date range</Table.ColumnHeader>
                     <Table.ColumnHeader>Estimated amount</Table.ColumnHeader>
-                    <Table.ColumnHeader>Actions</Table.ColumnHeader>
+                    <Table.ColumnHeader textAlign={"end"}>Actions</Table.ColumnHeader>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -39,8 +39,9 @@ export const IncomeBlueprintTable = (props: IncomeBlueprintTableProps) => {
                                 <Table.Cell><DateRangeCell from={record.startDate} to={record.endDate}/></Table.Cell>
                                 <Table.Cell><EstimatedAmountCell estimatedAmount={record.estimatedAmount}/></Table.Cell>
                                 <Table.Cell>
-                                    <HStack>
+                                    <HStack >
                                         <Button
+                                            ml={'auto'}
                                             size="sm"
                                             variant="outline"
                                             p={0}

@@ -1,24 +1,27 @@
-import {ColorModeButton} from "@/components/ui/color-mode.tsx";
-import {Center, Heading, HStack, Tabs, VStack} from "@chakra-ui/react";
-import {TbPigMoney, TbTags} from "react-icons/tb";
+import {Center, Container, Tabs} from "@chakra-ui/react";
+import {TbTags} from "react-icons/tb";
 import {ExpenseBlueprintPage} from "@/pages/ExpenseBlueprintPage.tsx";
 import {TagPage} from "@/pages/TagPage.tsx";
+import {GiPayMoney, GiReceiveMoney} from "react-icons/gi";
+import {IncomeBlueprintPage} from "@/pages/IncomeBlueprintPage.tsx";
+import {BlueprintSummary} from "@/components/expense/blueprint/BlueprintSummary.tsx";
 
 export const App = () => {
 
 
     return (
-        <VStack w={'full'} h={'full'}>
-            <HStack>
-                <Heading>Sheeeep</Heading>
-                <ColorModeButton/>
-            </HStack>
+        <Container>
+            <BlueprintSummary/>
             <Center w={'full'}>
-                <Tabs.Root defaultValue={"expense-blueprint"}>
+                <Tabs.Root defaultValue={"expense-blueprint"} w={'full'}>
                     <Tabs.List>
                         <Tabs.Trigger value={"expense-blueprint"}>
-                            <TbPigMoney/>
+                            <GiPayMoney/>
                             Expense blueprint
+                        </Tabs.Trigger>
+                        <Tabs.Trigger value={"income-blueprint"}>
+                            <GiReceiveMoney/>
+                            Income blueprint
                         </Tabs.Trigger>
                         <Tabs.Trigger value={"tags"}>
                             <TbTags/>
@@ -28,11 +31,14 @@ export const App = () => {
                     <Tabs.Content value={"expense-blueprint"}>
                         <ExpenseBlueprintPage/>
                     </Tabs.Content>
+                    <Tabs.Content value={"income-blueprint"}>
+                        <IncomeBlueprintPage/>
+                    </Tabs.Content>
                     <Tabs.Content value={"tags"}>
                         <TagPage/>
                     </Tabs.Content>
                 </Tabs.Root>
             </Center>
-        </VStack>
+        </Container>
     );
 }

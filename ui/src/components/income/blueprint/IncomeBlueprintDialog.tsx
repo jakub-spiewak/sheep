@@ -17,20 +17,19 @@ import {useForm} from "react-hook-form";
 import {isNullOrEmpty} from "@/util/functions.ts";
 import {
     EstimatedAmount,
-    ExpenseBlueprintCreateRequest,
-    ExpenseBlueprintUpdateRequest,
     FixedAmount,
     FrequencyEnum,
+    IncomeBlueprintCreateRequest,
+    IncomeBlueprintUpdateRequest,
     RangeAmount,
-    useCreateExpenseBlueprintMutation,
-    useUpdateExpenseBlueprintMutation,
+    useCreateIncomeBlueprintMutation,
+    useUpdateIncomeBlueprintMutation,
     VarianceAmount,
     VariancePercent
 } from "@/redux/generated/redux-api.ts";
 import {NativeSelectField, NativeSelectRoot} from "@/components/ui/native-select.tsx";
 import {EstimatedAmountField} from "@/components/common/EstimatedAmountField.tsx";
 import {useEffect} from "react";
-import {TagField} from "@/components/common/TagField.tsx";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z, ZodType} from "zod";
 
@@ -53,25 +52,24 @@ const frequencyOptions: { value: FrequencyEnum, label: string }[] = [
     }
 ]
 
-const defaultValues: ExpenseBlueprintCreateRequest = {
+const defaultValues: IncomeBlueprintCreateRequest = {
     name: "",
     frequency: "MONTHLY",
     startDate: "",
     endDate: undefined,
-    tags: [],
     estimatedAmount: {
         type: "FIXED",
         amount: 0.0,
     }
 };
 
-interface ExpenseBlueprintDialogProps {
+interface IncomeBlueprintDialogProps {
     open: boolean;
     setOpen: (value: boolean) => void;
-    valueToUpdate?: ExpenseBlueprintUpdateRequest & { id: string };
+    valueToUpdate?: IncomeBlueprintUpdateRequest & { id: string };
 }
 
-export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
+export const IncomeBlueprintDialog = (props: IncomeBlueprintDialogProps) => {
     const {open, setOpen, valueToUpdate} = props
 
     const fixedAmountSchema = z.object({
@@ -134,7 +132,6 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
         startDate: z.string().min(1, {message: "Start date is required"}),
         endDate: z.string().nullable().optional(),
         estimatedAmount: estimatedAmountSchema,
-        tags: z.array(z.string()),
     })
         .refine(data => {
                 if (!data.endDate || !data.startDate) {
@@ -158,17 +155,15 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
         }, {
             message: "End date must be after start date",
             path: ["endDate"]
-        }) satisfies ZodType<ExpenseBlueprintCreateRequest>
+        }) satisfies ZodType<IncomeBlueprintCreateRequest>
 
     const {
         register,
         control,
         handleSubmit,
-        watch,
-        setValue,
         formState: {errors},
         reset,
-    } = useForm<ExpenseBlueprintCreateRequest>({
+    } = useForm<IncomeBlueprintCreateRequest>({
         resolver: zodResolver(newDataSchemaSchema),
         resetOptions: {
             keepDirtyValues: false
@@ -176,24 +171,24 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
         defaultValues
     });
 
-    const [createExpenseBlueprint, createExpenseBlueprintResult] = useCreateExpenseBlueprintMutation()
-    const [updateExpenseBlueprint, updateExpenseBlueprintResult] = useUpdateExpenseBlueprintMutation()
+    const [createIncomeBlueprint, createIncomeBlueprintResult] = useCreateIncomeBlueprintMutation()
+    const [updateIncomeBlueprint, updateIncomeBlueprintResult] = useUpdateIncomeBlueprintMutation()
 
     useEffect(() => {
-        const {isSuccess, reset} = createExpenseBlueprintResult
+        const {isSuccess, reset} = createIncomeBlueprintResult
         if (isSuccess) {
             setOpen(false);
             reset()
         }
-    }, [createExpenseBlueprintResult, setOpen]);
+    }, [createIncomeBlueprintResult, setOpen]);
 
     useEffect(() => {
-        const {isSuccess, reset} = updateExpenseBlueprintResult
+        const {isSuccess, reset} = updateIncomeBlueprintResult
         if (isSuccess) {
             setOpen(false);
             reset()
         }
-    }, [updateExpenseBlueprintResult, setOpen]);
+    }, [updateIncomeBlueprintResult, setOpen]);
 
 
     useEffect(() => {
@@ -208,11 +203,11 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
         }
     }, [open, reset]);
 
-    const onSubmit = (data: ExpenseBlueprintCreateRequest) => {
+    const onSubmit = (data: IncomeBlueprintCreateRequest) => {
         if (valueToUpdate) {
-            updateExpenseBlueprint({expenseBlueprintUpdateRequest: data, blueprintId: valueToUpdate.id})
+            updateIncomeBlueprint({incomeBlueprintUpdateRequest: data, blueprintId: valueToUpdate.id})
         } else {
-            createExpenseBlueprint({expenseBlueprintCreateRequest: data})
+            createIncomeBlueprint({incomeBlueprintCreateRequest: data})
         }
     }
 
@@ -231,20 +226,20 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
             <DialogBackdrop/>
             <DialogTrigger asChild>
                 <Button>
-                    Create expense blueprint
+                    Create income blueprint
                 </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogCloseTrigger/>
                 <DialogHeader>
-                    <DialogTitle>Create expense blueprint</DialogTitle>
+                    <DialogTitle>Create income blueprint</DialogTitle>
                 </DialogHeader>
                 <DialogBody>
                     <form id={"main_form"} onSubmit={handleSubmit(onSubmit)}>
                         <Stack gap={4}>
                             <Field
                                 label={"Name"}
-                                helperText={"Name of the expense"}
+                                helperText={"Name of the income"}
                                 invalid={!!errors.name}
                                 errorText={errors.name?.message}
                             >
@@ -256,7 +251,7 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
                             {open && <EstimatedAmountField control={control}/>}
                             <Field
                                 label={"Frequency"}
-                                helperText={"How often the expense is expected to occur"}
+                                helperText={"How often the income is expected to occur"}
                             >
                                 <NativeSelectRoot>
                                     <NativeSelectField {...register("frequency")} items={frequencyOptions}/>
@@ -265,7 +260,7 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
                             <HStack alignItems={"flex-start"}>
                                 <Field
                                     label={"Start date"}
-                                    helperText={"When the expense is expected to start"}
+                                    helperText={"When the income is expected to start"}
                                     invalid={!!errors.startDate}
                                     errorText={errors.startDate?.message}
                                 >
@@ -276,7 +271,7 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
                                 </Field>
                                 <Field
                                     label={"End date"}
-                                    helperText={"When the expense is expected to end"}
+                                    helperText={"When the income is expected to end"}
                                     invalid={!!errors.endDate}
                                     errorText={errors.endDate?.message}
                                 >
@@ -286,10 +281,6 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
                                     />
                                 </Field>
                             </HStack>
-                            <TagField
-                                tags={watch("tags")}
-                                onChange={(tags) => setValue("tags", tags)}
-                            />
                         </Stack>
                     </form>
                 </DialogBody>
@@ -301,7 +292,7 @@ export const ExpenseBlueprintDialog = (props: ExpenseBlueprintDialogProps) => {
                         type={"submit"}
                         form={"main_form"}
                         disabled={!isNullOrEmpty(errors)}
-                        loading={createExpenseBlueprintResult.isLoading || updateExpenseBlueprintResult.isLoading}
+                        loading={createIncomeBlueprintResult.isLoading || updateIncomeBlueprintResult.isLoading}
                     >
                         Save
                     </Button>

@@ -1,5 +1,6 @@
 package com.jakubspiewak.sheep.tag
 
+import com.jakubspiewak.sheep.expense.ExpenseBlueprintRepository
 import com.jakubspiewak.sheep.generated.api.TagApiDelegate
 import com.jakubspiewak.sheep.generated.model.TagCreateRequest
 import com.jakubspiewak.sheep.generated.model.TagResponse
@@ -9,7 +10,10 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class TagApiDelegateImpl(val repository: TagRepository) : TagApiDelegate {
+class TagApiDelegateImpl(
+    private val repository: TagRepository,
+    private val expenseBlueprintRepository: ExpenseBlueprintRepository
+) : TagApiDelegate {
 
     override fun createTag(tagCreateRequest: TagCreateRequest): ResponseEntity<TagResponse> {
         val newTag = TagDocument(ObjectId.get(), tagCreateRequest.name)
@@ -19,6 +23,11 @@ class TagApiDelegateImpl(val repository: TagRepository) : TagApiDelegate {
 
     override fun deleteTag(tagId: String): ResponseEntity<Unit> {
         val objId = ObjectId(tagId)
+        val expenses = expenseBlueprintRepository.findByTagsContains(objId)
+        expenses.forEach {
+            it.tags = it.tags.filter { tagId -> tagId != objId }
+        }
+        expenseBlueprintRepository.saveAll(expenses)
         repository.deleteById(objId)
         return ResponseEntity.noContent().build()
     }

@@ -1,7 +1,7 @@
 package com.jakubspiewak.sheep.report
 
-import com.jakubspiewak.sheep.expense.ExpenseBlueprintDocument
-import com.jakubspiewak.sheep.expense.ExpenseBlueprintRepository
+import com.jakubspiewak.sheep.expense.ExpenseScheduleDocument
+import com.jakubspiewak.sheep.expense.ExpenseScheduleRepository
 import com.jakubspiewak.sheep.generated.api.ReportApiDelegate
 import com.jakubspiewak.sheep.generated.model.*
 import com.jakubspiewak.sheep.income.IncomeBlueprintDocument
@@ -12,7 +12,7 @@ import java.time.LocalDate
 
 @Service
 class ReportApiDelegateImpl(
-    private val expenseBlueprintRepository: ExpenseBlueprintRepository,
+    private val expenseBlueprintRepository: ExpenseScheduleRepository,
     private val incomeBlueprintRepository: IncomeBlueprintRepository
 ) : ReportApiDelegate {
     override fun getCashFlow(
@@ -58,15 +58,10 @@ class ReportApiDelegateImpl(
 }
 
 private fun IncomeBlueprintDocument.getMonthlyAvgAmount(): Double {
-    return this.estimatedAmount.getAvgValue() * when (this.frequency) {
-        FrequencyEnum.DAILY -> 30
-        FrequencyEnum.WEEKLY -> 4
-        FrequencyEnum.MONTHLY -> 1
-        FrequencyEnum.YEARLY -> 1 / 12
-    }
+    return this.estimatedAmount.getAvgValue()
 }
 
-private fun ExpenseBlueprintDocument.getMonthlyAvgAmount(): Double {
+private fun ExpenseScheduleDocument.getMonthlyAvgAmount(): Double {
     return this.estimatedAmount.getAvgValue() * when (this.frequency) {
         FrequencyEnum.DAILY -> 30
         FrequencyEnum.WEEKLY -> 4

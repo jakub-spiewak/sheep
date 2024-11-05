@@ -103,7 +103,7 @@ export const TagDialog = (props: TagDialogProps) => {
         >
             <DialogBackdrop/>
             <DialogTrigger asChild>
-                <Button>
+                <Button marginRight="auto">
                     Create tag
                 </Button>
             </DialogTrigger>

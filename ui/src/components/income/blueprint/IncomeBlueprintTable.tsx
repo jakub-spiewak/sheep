@@ -4,7 +4,7 @@ import {
     useGetIncomeBlueprintsQuery
 } from "@/redux/generated/redux-api.ts";
 import {Center, HStack, Spinner, Table, Text, VStack} from "@chakra-ui/react";
-import {ExpenseBlueprintFrequency} from "@/components/common/ExpenseBlueprintFrequency.tsx";
+import {ExpenseScheduleFrequency} from "@/components/common/ExpenseScheduleFrequency.tsx";
 import {DateRangeCell} from "@/components/common/DateRangeCell.tsx";
 import {EstimatedAmountCell} from "@/components/common/EstimatedAmountCell.tsx";
 import {MdDelete, MdEdit} from "react-icons/md";
@@ -35,7 +35,7 @@ export const IncomeBlueprintTable = (props: IncomeBlueprintTableProps) => {
                         return (
                             <Table.Row key={`income_${index}`}>
                                 <Table.Cell>{record.name}</Table.Cell>
-                                <Table.Cell><ExpenseBlueprintFrequency frequency={record.frequency}/></Table.Cell>
+                                <Table.Cell><ExpenseScheduleFrequency frequency={record.frequency}/></Table.Cell>
                                 <Table.Cell><DateRangeCell from={record.startDate} to={record.endDate}/></Table.Cell>
                                 <Table.Cell><EstimatedAmountCell estimatedAmount={record.estimatedAmount}/></Table.Cell>
                                 <Table.Cell>

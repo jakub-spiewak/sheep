@@ -1,5 +1,9 @@
 import { api } from "../api";
-export const addTagTypes = ["expense-blueprint"] as const;
+export const addTagTypes = [
+  "expense-schedule",
+  "income-blueprint",
+  "tag",
+] as const;
 const injectedRtkApi = api
   .enhanceEndpoints({
     addTagTypes,
@@ -47,53 +51,53 @@ const injectedRtkApi = api
           method: "DELETE",
         }),
       }),
-      getExpenseBlueprints: build.query<
-        GetExpenseBlueprintsApiResponse,
-        GetExpenseBlueprintsApiArg
+      getExpenseSchedules: build.query<
+        GetExpenseSchedulesApiResponse,
+        GetExpenseSchedulesApiArg
       >({
-        query: () => ({ url: `/expense-blueprint` }),
-        providesTags: ["expense-blueprint"],
+        query: () => ({ url: `/expense-schedule` }),
+        providesTags: ["expense-schedule"],
       }),
-      createExpenseBlueprint: build.mutation<
-        CreateExpenseBlueprintApiResponse,
-        CreateExpenseBlueprintApiArg
+      createExpenseSchedule: build.mutation<
+        CreateExpenseScheduleApiResponse,
+        CreateExpenseScheduleApiArg
       >({
         query: (queryArg) => ({
-          url: `/expense-blueprint`,
+          url: `/expense-schedule`,
           method: "POST",
-          body: queryArg.expenseBlueprintCreateRequest,
+          body: queryArg.expenseScheduleCreateRequest,
         }),
-        invalidatesTags: ["expense-blueprint"],
+        invalidatesTags: ["expense-schedule"],
       }),
-      getExpenseBlueprintById: build.query<
-        GetExpenseBlueprintByIdApiResponse,
-        GetExpenseBlueprintByIdApiArg
+      getExpenseScheduleById: build.query<
+        GetExpenseScheduleByIdApiResponse,
+        GetExpenseScheduleByIdApiArg
       >({
         query: (queryArg) => ({
-          url: `/expense-blueprint/${queryArg.blueprintId}`,
+          url: `/expense-schedule/${queryArg.blueprintId}`,
         }),
-        providesTags: ["expense-blueprint"],
+        providesTags: ["expense-schedule"],
       }),
-      updateExpenseBlueprint: build.mutation<
-        UpdateExpenseBlueprintApiResponse,
-        UpdateExpenseBlueprintApiArg
+      updateExpenseSchedule: build.mutation<
+        UpdateExpenseScheduleApiResponse,
+        UpdateExpenseScheduleApiArg
       >({
         query: (queryArg) => ({
-          url: `/expense-blueprint/${queryArg.blueprintId}`,
+          url: `/expense-schedule/${queryArg.blueprintId}`,
           method: "PUT",
-          body: queryArg.expenseBlueprintUpdateRequest,
+          body: queryArg.expenseScheduleUpdateRequest,
         }),
-        invalidatesTags: ["expense-blueprint"],
+        invalidatesTags: ["expense-schedule"],
       }),
-      deleteExpenseBlueprint: build.mutation<
-        DeleteExpenseBlueprintApiResponse,
-        DeleteExpenseBlueprintApiArg
+      deleteExpenseSchedule: build.mutation<
+        DeleteExpenseScheduleApiResponse,
+        DeleteExpenseScheduleApiArg
       >({
         query: (queryArg) => ({
-          url: `/expense-blueprint/${queryArg.blueprintId}`,
+          url: `/expense-schedule/${queryArg.blueprintId}`,
           method: "DELETE",
         }),
-        invalidatesTags: ["expense-blueprint"],
+        invalidatesTags: ["expense-schedule"],
       }),
       getIncomeEntries: build.query<
         GetIncomeEntriesApiResponse,
@@ -141,6 +145,7 @@ const injectedRtkApi = api
         GetIncomeBlueprintsApiArg
       >({
         query: () => ({ url: `/income-blueprint` }),
+        providesTags: ["income-blueprint"],
       }),
       createIncomeBlueprint: build.mutation<
         CreateIncomeBlueprintApiResponse,
@@ -151,6 +156,7 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.incomeBlueprintCreateRequest,
         }),
+        invalidatesTags: ["income-blueprint"],
       }),
       getIncomeBlueprintById: build.query<
         GetIncomeBlueprintByIdApiResponse,
@@ -159,6 +165,7 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/income-blueprint/${queryArg.blueprintId}`,
         }),
+        providesTags: ["income-blueprint"],
       }),
       updateIncomeBlueprint: build.mutation<
         UpdateIncomeBlueprintApiResponse,
@@ -169,6 +176,7 @@ const injectedRtkApi = api
           method: "PUT",
           body: queryArg.incomeBlueprintUpdateRequest,
         }),
+        invalidatesTags: ["income-blueprint"],
       }),
       deleteIncomeBlueprint: build.mutation<
         DeleteIncomeBlueprintApiResponse,
@@ -178,9 +186,11 @@ const injectedRtkApi = api
           url: `/income-blueprint/${queryArg.blueprintId}`,
           method: "DELETE",
         }),
+        invalidatesTags: ["income-blueprint"],
       }),
       getTags: build.query<GetTagsApiResponse, GetTagsApiArg>({
         query: () => ({ url: `/tag` }),
+        providesTags: ["tag"],
       }),
       createTag: build.mutation<CreateTagApiResponse, CreateTagApiArg>({
         query: (queryArg) => ({
@@ -188,9 +198,11 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.tagCreateRequest,
         }),
+        invalidatesTags: ["tag"],
       }),
       getTagById: build.query<GetTagByIdApiResponse, GetTagByIdApiArg>({
         query: (queryArg) => ({ url: `/tag/${queryArg.tagId}` }),
+        providesTags: ["tag"],
       }),
       updateTag: build.mutation<UpdateTagApiResponse, UpdateTagApiArg>({
         query: (queryArg) => ({
@@ -198,12 +210,14 @@ const injectedRtkApi = api
           method: "PUT",
           body: queryArg.tagUpdateRequest,
         }),
+        invalidatesTags: ["tag"],
       }),
       deleteTag: build.mutation<DeleteTagApiResponse, DeleteTagApiArg>({
         query: (queryArg) => ({
           url: `/tag/${queryArg.tagId}`,
           method: "DELETE",
         }),
+        invalidatesTags: ["tag"],
       }),
       getFinancialSummary: build.query<
         GetFinancialSummaryApiResponse,
@@ -294,31 +308,31 @@ export type DeleteExpenseEntryApiArg = {
   /** The unique identifier of the entry. */
   entryId: string;
 };
-export type GetExpenseBlueprintsApiResponse =
-  /** status 200 A list of expense blueprints retrieved successfully. */ ExpenseBlueprintResponse[];
-export type GetExpenseBlueprintsApiArg = void;
-export type CreateExpenseBlueprintApiResponse =
-  /** status 201 Expense blueprint created successfully. */ ExpenseBlueprintResponse;
-export type CreateExpenseBlueprintApiArg = {
+export type GetExpenseSchedulesApiResponse =
+  /** status 200 A list of expense blueprints retrieved successfully. */ ExpenseScheduleResponse[];
+export type GetExpenseSchedulesApiArg = void;
+export type CreateExpenseScheduleApiResponse =
+  /** status 201 Expense blueprint created successfully. */ ExpenseScheduleResponse;
+export type CreateExpenseScheduleApiArg = {
   /** Expense blueprint details to be created. */
-  expenseBlueprintCreateRequest: ExpenseBlueprintCreateRequest;
+  expenseScheduleCreateRequest: ExpenseScheduleCreateRequest;
 };
-export type GetExpenseBlueprintByIdApiResponse =
-  /** status 200 Expense blueprint details retrieved successfully. */ ExpenseBlueprintResponse;
-export type GetExpenseBlueprintByIdApiArg = {
+export type GetExpenseScheduleByIdApiResponse =
+  /** status 200 Expense blueprint details retrieved successfully. */ ExpenseScheduleResponse;
+export type GetExpenseScheduleByIdApiArg = {
   /** The unique identifier of the blueprint. */
   blueprintId: string;
 };
-export type UpdateExpenseBlueprintApiResponse =
-  /** status 200 Expense blueprint updated successfully. */ ExpenseBlueprintResponse;
-export type UpdateExpenseBlueprintApiArg = {
+export type UpdateExpenseScheduleApiResponse =
+  /** status 200 Expense blueprint updated successfully. */ ExpenseScheduleResponse;
+export type UpdateExpenseScheduleApiArg = {
   /** The unique identifier of the blueprint. */
   blueprintId: string;
   /** Updated expense blueprint details. */
-  expenseBlueprintUpdateRequest: ExpenseBlueprintUpdateRequest;
+  expenseScheduleUpdateRequest: ExpenseScheduleUpdateRequest;
 };
-export type DeleteExpenseBlueprintApiResponse = unknown;
-export type DeleteExpenseBlueprintApiArg = {
+export type DeleteExpenseScheduleApiResponse = unknown;
+export type DeleteExpenseScheduleApiArg = {
   /** The unique identifier of the blueprint. */
   blueprintId: string;
 };
@@ -528,39 +542,39 @@ export type EstimatedAmount =
   | VarianceAmount
   | VariancePercent;
 export type FrequencyEnum = "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY";
-export type ExpenseBlueprintResponse = {
+export type ExpenseScheduleResponse = {
   /** Unique identifier of the expense blueprint. */
   id: string;
   /** The name of the expense blueprint. */
   name: string;
   estimatedAmount: EstimatedAmount;
   frequency: FrequencyEnum;
-  /** The start date for the expense blueprint. */
-  startDate: string;
+  /** The optional start date for the expense blueprint. */
+  startDate?: string | null;
   /** The optional end date for the expense blueprint. */
   endDate?: string | null;
   /** A list of tag IDs associated with the blueprint. */
   tags?: string[];
 };
-export type ExpenseBlueprintCreateRequest = {
+export type ExpenseScheduleCreateRequest = {
   /** The name of the expense blueprint. */
   name: string;
   estimatedAmount: EstimatedAmount;
   frequency: FrequencyEnum;
   /** The start date for the expense blueprint. */
-  startDate: string;
+  startDate?: string | null;
   /** The optional end date for the expense blueprint. */
   endDate?: string | null;
   /** A list of tag IDs to associate with the blueprint. */
   tags?: string[];
 };
-export type ExpenseBlueprintUpdateRequest = {
+export type ExpenseScheduleUpdateRequest = {
   /** The updated name of the expense blueprint. */
   name?: string;
   estimatedAmount?: EstimatedAmount;
   frequency?: FrequencyEnum;
   /** The updated start date for the expense blueprint. */
-  startDate?: string;
+  startDate?: string | null;
   /** The updated optional end date for the expense blueprint. */
   endDate?: string | null;
   /** The updated list of tag IDs associated with the blueprint. */
@@ -604,9 +618,8 @@ export type IncomeBlueprintResponse = {
   /** The name of the income blueprint. */
   name: string;
   estimatedAmount: EstimatedAmount;
-  frequency: FrequencyEnum;
   /** The start date for the income blueprint. */
-  startDate: string;
+  startDate?: string | null;
   /** The optional end date for the income blueprint. */
   endDate?: string | null;
 };
@@ -616,7 +629,7 @@ export type IncomeBlueprintCreateRequest = {
   estimatedAmount: EstimatedAmount;
   frequency: FrequencyEnum;
   /** The start date for the income blueprint. */
-  startDate: string;
+  startDate?: string | null;
   /** The optional end date for the income blueprint. */
   endDate?: string | null;
 };
@@ -626,7 +639,7 @@ export type IncomeBlueprintUpdateRequest = {
   estimatedAmount: EstimatedAmount;
   frequency: FrequencyEnum;
   /** The updated start date for the income blueprint. */
-  startDate: string;
+  startDate?: string | null;
   /** The updated optional end date for the income blueprint. */
   endDate?: string | null;
 };
@@ -703,11 +716,11 @@ export const {
   useGetExpenseEntryByIdQuery,
   useUpdateExpenseEntryMutation,
   useDeleteExpenseEntryMutation,
-  useGetExpenseBlueprintsQuery,
-  useCreateExpenseBlueprintMutation,
-  useGetExpenseBlueprintByIdQuery,
-  useUpdateExpenseBlueprintMutation,
-  useDeleteExpenseBlueprintMutation,
+  useGetExpenseSchedulesQuery,
+  useCreateExpenseScheduleMutation,
+  useGetExpenseScheduleByIdQuery,
+  useUpdateExpenseScheduleMutation,
+  useDeleteExpenseScheduleMutation,
   useGetIncomeEntriesQuery,
   useCreateIncomeEntryMutation,
   useGetIncomeEntryByIdQuery,

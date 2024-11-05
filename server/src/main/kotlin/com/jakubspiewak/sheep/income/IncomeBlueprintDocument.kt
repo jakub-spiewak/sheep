@@ -2,7 +2,6 @@ package com.jakubspiewak.sheep.income
 
 import com.jakubspiewak.sheep.common.toResponse
 import com.jakubspiewak.sheep.generated.model.EstimatedAmount
-import com.jakubspiewak.sheep.generated.model.FrequencyEnum
 import com.jakubspiewak.sheep.generated.model.IncomeBlueprintResponse
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
@@ -15,8 +14,7 @@ data class IncomeBlueprintDocument(
     var id: ObjectId,
     var name: String,
     var estimatedAmount: EstimatedAmount,
-    var frequency: FrequencyEnum,
-    var startDate: LocalDate,
+    var startDate: LocalDate? =null,
     var endDate: LocalDate? = null,
 ) {
 
@@ -24,7 +22,6 @@ data class IncomeBlueprintDocument(
         return IncomeBlueprintResponse(
             id = id.toHexString(),
             estimatedAmount = estimatedAmount.toResponse(),
-            frequency = frequency,
             startDate = startDate,
             endDate = endDate,
             name = name

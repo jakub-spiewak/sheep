@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface ExpenseBlueprintRepository : MongoRepository<ExpenseBlueprintDocument, ObjectId> {
+interface ExpenseScheduleRepository : MongoRepository<ExpenseScheduleDocument, ObjectId> {
 
-    fun findByTagsContains(tags: ObjectId): List<ExpenseBlueprintDocument>
+    fun findByTagsContains(tags: ObjectId): List<ExpenseScheduleDocument>
 }

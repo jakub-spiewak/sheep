@@ -1,6 +1,6 @@
 package com.jakubspiewak.sheep.tag
 
-import com.jakubspiewak.sheep.expense.ExpenseBlueprintRepository
+import com.jakubspiewak.sheep.expense.ExpenseScheduleRepository
 import com.jakubspiewak.sheep.generated.api.TagApiDelegate
 import com.jakubspiewak.sheep.generated.model.TagCreateRequest
 import com.jakubspiewak.sheep.generated.model.TagResponse
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 @Service
 class TagApiDelegateImpl(
     private val repository: TagRepository,
-    private val expenseBlueprintRepository: ExpenseBlueprintRepository
+    private val expenseBlueprintRepository: ExpenseScheduleRepository
 ) : TagApiDelegate {
 
     override fun createTag(tagCreateRequest: TagCreateRequest): ResponseEntity<TagResponse> {

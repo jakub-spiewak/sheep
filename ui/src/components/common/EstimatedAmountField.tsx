@@ -6,6 +6,7 @@ import {NumberInputControlledField} from "./NumberInputControlledField.tsx";
 import {NativeSelectField, NativeSelectRoot} from "@/components/ui/native-select.tsx";
 import {HasEstimatedAmount} from "@/util/types";
 import {currency} from "@/util/commons.ts";
+import {useEffect} from "react";
 
 
 const estimatedAmountTypeOptions: { value: EstimatedAmountTypeEnum; label: string }[] = [
@@ -212,8 +213,56 @@ const FieldFactory = (props: FieldFactoryProps) => {
 export const EstimatedAmountField = (props: EstimatedAmountFieldProps) => {
     const {control} = props;
 
-    const {field: typeField} = useController({control, name: 'estimatedAmount.type', shouldUnregister: true})
+    const {field: typeField} = useController({control, name: 'estimatedAmount.type'})
     const type = typeField.value
+
+    // Robust solution that just works
+    useEffect(() => {
+        switch (type) {
+            case "FIXED":
+                delete control._formValues.estimatedAmount.min
+                delete control._formValues.estimatedAmount.max
+                delete control._formValues.estimatedAmount.variance
+                delete control._formValues.estimatedAmount.variancePercent
+                if (!control._formValues.estimatedAmount.amount) {
+                    control._formValues.estimatedAmount.amount = 0
+                }
+                break;
+            case "RANGE":
+                delete control._formValues.estimatedAmount.amount
+                delete control._formValues.estimatedAmount.variance
+                delete control._formValues.estimatedAmount.variancePercent
+                if (!control._formValues.estimatedAmount.min) {
+                    control._formValues.estimatedAmount.min = 0;
+                }
+                if (!control._formValues.estimatedAmount.max) {
+                    control._formValues.estimatedAmount.max = 0;
+                }
+                break;
+            case "VARIANCE_AMOUNT":
+                delete control._formValues.estimatedAmount.min
+                delete control._formValues.estimatedAmount.max
+                delete control._formValues.estimatedAmount.variancePercent
+                if (!control._formValues.estimatedAmount.amount) {
+                    control._formValues.estimatedAmount.amount = 0;
+                }
+                if (!control._formValues.estimatedAmount.variance) {
+                    control._formValues.estimatedAmount.variance = 0;
+                }
+                break;
+            case "VARIANCE_PERCENT":
+                delete control._formValues.estimatedAmount.min
+                delete control._formValues.estimatedAmount.max
+                delete control._formValues.estimatedAmount.variance
+                if (!control._formValues.estimatedAmount.amount) {
+                    control._formValues.estimatedAmount.amount = 0;
+                }
+                if (!control._formValues.estimatedAmount.variancePercent) {
+                    control._formValues.estimatedAmount.variancePercent = 0;
+                }
+                break;
+        }
+    }, [control._formValues.estimatedAmount, type])
 
     return (
         <Fieldset.Root>

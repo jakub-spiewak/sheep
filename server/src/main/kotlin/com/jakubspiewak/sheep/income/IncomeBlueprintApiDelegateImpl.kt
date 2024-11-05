@@ -16,7 +16,6 @@ class IncomeBlueprintApiDelegateImpl(private val repository: IncomeBlueprintRepo
             id = ObjectId.get(),
             name = incomeBlueprintCreateRequest.name,
             estimatedAmount = incomeBlueprintCreateRequest.estimatedAmount,
-            frequency = incomeBlueprintCreateRequest.frequency,
             startDate = incomeBlueprintCreateRequest.startDate,
             endDate = incomeBlueprintCreateRequest.endDate
         )
@@ -51,7 +50,6 @@ class IncomeBlueprintApiDelegateImpl(private val repository: IncomeBlueprintRepo
             val updatedDocument = document.copy(
                 name = incomeBlueprintUpdateRequest.name,
                 estimatedAmount = incomeBlueprintUpdateRequest.estimatedAmount,
-                frequency = incomeBlueprintUpdateRequest.frequency,
                 startDate = incomeBlueprintUpdateRequest.startDate,
                 endDate = incomeBlueprintUpdateRequest.endDate
             )

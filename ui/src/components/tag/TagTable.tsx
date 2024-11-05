@@ -3,11 +3,11 @@ import {Center, HStack, Spinner, Table, Text, VStack} from "@chakra-ui/react";
 import {MdDelete, MdEdit} from "react-icons/md";
 import {Button} from "@/components/ui/button.tsx";
 
-interface ExpenseBlueprintTableProps {
+interface ExpenseScheduleTableProps {
     onEdit?: (value: TagResponse) => void;
 }
 
-export const TagTable = (props: ExpenseBlueprintTableProps) => {
+export const TagTable = (props: ExpenseScheduleTableProps) => {
     const {onEdit} = props
     const {data = [], isLoading} = useGetTagsQuery()
     const [deleteTag, {isLoading: isDeleting, originalArgs}] = useDeleteTagMutation()
@@ -16,7 +16,7 @@ export const TagTable = (props: ExpenseBlueprintTableProps) => {
             <Table.Header>
                 <Table.Row>
                     <Table.ColumnHeader>Name</Table.ColumnHeader>
-                    <Table.ColumnHeader>Actions</Table.ColumnHeader>
+                    <Table.ColumnHeader textAlign="right">Actions</Table.ColumnHeader>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -28,6 +28,7 @@ export const TagTable = (props: ExpenseBlueprintTableProps) => {
                                 <Table.Cell>
                                     <HStack>
                                         <Button
+                                            ml={'auto'}
                                             size="sm"
                                             p={0}
                                             variant={"outline"}

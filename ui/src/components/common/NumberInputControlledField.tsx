@@ -12,7 +12,8 @@ interface NumerInputFieldProps<T extends FieldValues> {
 
 export const NumberInputControlledField = <T extends FieldValues>(props: NumerInputFieldProps<T>) => {
     const {control, name, inputRootProps = {}, fieldProps = {}} = props;
-    const {field, fieldState} = useController({control, name, shouldUnregister: true})
+
+    const {field, fieldState} = useController({control, name})
     const error = fieldState.error
 
     const isPercent = inputRootProps.formatOptions?.style === 'percent'

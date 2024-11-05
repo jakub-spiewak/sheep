@@ -94,14 +94,14 @@ paths:
         '404':
           description: Expense entry not found.
 
-  /expense-blueprint:
+  /expense-schedule:
     get:
-      operationId: getExpenseBlueprints
+      operationId: getExpenseSchedules
       summary: Retrieve All Expense Blueprints
       description: |
         Fetch a list of all expense blueprints. Blueprints are templates for recurring expense entries.
       tags:
-        - expense-blueprint
+        - expense-schedule
       responses:
         '200':
           description: A list of expense blueprints retrieved successfully.
@@ -110,78 +110,78 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ExpenseBlueprintResponse'
+                  $ref: '#/components/schemas/ExpenseScheduleResponse'
     post:
-      operationId: createExpenseBlueprint
+      operationId: createExpenseSchedule
       summary: Create a New Expense Blueprint
       description: |
         Add a new expense blueprint to the system with the provided details, including name, estimated amount, frequency, start and end dates, and associated tags.
       tags:
-        - expense-blueprint
+        - expense-schedule
       requestBody:
         required: true
         description: Expense blueprint details to be created.
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExpenseBlueprintCreateRequest'
+              $ref: '#/components/schemas/ExpenseScheduleCreateRequest'
       responses:
         '201':
           description: Expense blueprint created successfully.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExpenseBlueprintResponse'
+                $ref: '#/components/schemas/ExpenseScheduleResponse'
 
-  /expense-blueprint/{blueprintId}:
+  /expense-schedule/{blueprintId}:
     parameters:
       - $ref: '#/components/parameters/blueprintId'
     get:
-      operationId: getExpenseBlueprintById
+      operationId: getExpenseScheduleById
       summary: Retrieve a Specific Expense Blueprint
       description: |
         Fetch detailed information of a specific expense blueprint identified by its unique ID.
       tags:
-        - expense-blueprint
+        - expense-schedule
       responses:
         '200':
           description: Expense blueprint details retrieved successfully.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExpenseBlueprintResponse'
+                $ref: '#/components/schemas/ExpenseScheduleResponse'
         '404':
           description: Expense blueprint not found.
     put:
-      operationId: updateExpenseBlueprint
+      operationId: updateExpenseSchedule
       summary: Update an Existing Expense Blueprint
       description: |
         Update the details of an existing expense blueprint using its unique ID. Only the provided fields will be updated.
       tags:
-        - expense-blueprint
+        - expense-schedule
       requestBody:
         required: true
         description: Updated expense blueprint details.
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExpenseBlueprintUpdateRequest'
+              $ref: '#/components/schemas/ExpenseScheduleUpdateRequest'
       responses:
         '200':
           description: Expense blueprint updated successfully.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExpenseBlueprintResponse'
+                $ref: '#/components/schemas/ExpenseScheduleResponse'
         '404':
           description: Expense blueprint not found.
     delete:
-      operationId: deleteExpenseBlueprint
+      operationId: deleteExpenseSchedule
       summary: Delete an Expense Blueprint
       description: |
         Remove an existing expense blueprint from the system using its unique ID.
       tags:
-        - expense-blueprint
+        - expense-schedule
       responses:
         '204':
           description: Expense blueprint deleted successfully.
@@ -275,6 +275,8 @@ paths:
   /income-blueprint:
     get:
       operationId: getIncomeBlueprints
+      tags:
+        - income-blueprint
       summary: Retrieve All Income Blueprints
       description: |
         Fetch a list of all income blueprints. Blueprints are templates for recurring income entries.
@@ -289,6 +291,8 @@ paths:
                   $ref: '#/components/schemas/IncomeBlueprintResponse'
     post:
       operationId: createIncomeBlueprint
+      tags:
+        - income-blueprint
       summary: Create a New Income Blueprint
       description: |
         Add a new income blueprint to the system with the provided details, including name, estimated amount, frequency, start and end dates, and associated tags.
@@ -312,6 +316,8 @@ paths:
       - $ref: '#/components/parameters/blueprintId'
     get:
       operationId: getIncomeBlueprintById
+      tags:
+        - income-blueprint
       summary: Retrieve a Specific Income Blueprint
       description: |
         Fetch detailed information of a specific income blueprint identified by its unique ID.
@@ -326,6 +332,8 @@ paths:
           description: Income blueprint not found.
     put:
       operationId: updateIncomeBlueprint
+      tags:
+        - income-blueprint
       summary: Update an Existing Income Blueprint
       description: |
         Update the details of an existing income blueprint using its unique ID. Only the provided fields will be updated.
@@ -347,6 +355,8 @@ paths:
           description: Income blueprint not found.
     delete:
       operationId: deleteIncomeBlueprint
+      tags:
+        - income-blueprint
       summary: Delete an Income Blueprint
       description: |
         Remove an existing income blueprint from the system using its unique ID.
@@ -359,6 +369,8 @@ paths:
   /tag:
     get:
       operationId: getTags
+      tags:
+        - tag
       summary: Retrieve All Tags
       description: |
         Fetch a list of all tags used to categorize expenses and incomes.
@@ -373,6 +385,8 @@ paths:
                   $ref: '#/components/schemas/TagResponse'
     post:
       operationId: createTag
+      tags:
+        - tag
       summary: Create a New Tag
       description: |
         Add a new tag to the system for categorizing expenses and incomes.
@@ -396,6 +410,8 @@ paths:
       - $ref: '#/components/parameters/tagId'
     get:
       operationId: getTagById
+      tags:
+        - tag
       summary: Retrieve a Specific Tag
       description: |
         Fetch detailed information of a specific tag identified by its unique ID.
@@ -410,6 +426,8 @@ paths:
           description: Tag not found.
     put:
       operationId: updateTag
+      tags:
+        - tag
       summary: Update an Existing Tag
       description: |
         Update the name of an existing tag using its unique ID.
@@ -431,6 +449,8 @@ paths:
           description: Tag not found.
     delete:
       operationId: deleteTag
+      tags:
+        - tag
       summary: Delete a Tag
       description: |
         Remove an existing tag from the system using its unique ID.
@@ -443,6 +463,9 @@ paths:
   /report/summary:
     get:
       operationId: getFinancialSummary
+#      tags:
+#        - blueprint-expense
+#        - blueprint-income
       summary: Retrieve Financial Summary
       description: |
         Generate a financial summary over a specified period, including total income, total expenses, and net balance.
@@ -699,7 +722,7 @@ components:
             type: string
 
     # Expense Blueprint Schemas
-    ExpenseBlueprintResponse:
+    ExpenseScheduleResponse:
       type: object
       description: Represents an expense blueprint in the system.
       properties:
@@ -716,7 +739,8 @@ components:
         startDate:
           type: string
           format: date
-          description: The start date for the expense blueprint.
+          nullable: true
+          description: The optional start date for the expense blueprint.
         endDate:
           type: string
           format: date
@@ -732,9 +756,8 @@ components:
         - name
         - estimatedAmount
         - frequency
-        - startDate
 
-    ExpenseBlueprintCreateRequest:
+    ExpenseScheduleCreateRequest:
       type: object
       description: Payload for creating a new expense blueprint.
       properties:
@@ -748,6 +771,7 @@ components:
         startDate:
           type: string
           format: date
+          nullable: true
           description: The start date for the expense blueprint.
         endDate:
           type: string
@@ -763,9 +787,8 @@ components:
         - name
         - estimatedAmount
         - frequency
-        - startDate
 
-    ExpenseBlueprintUpdateRequest:
+    ExpenseScheduleUpdateRequest:
       type: object
       description: Payload for updating an existing expense blueprint.
       properties:
@@ -779,6 +802,7 @@ components:
         startDate:
           type: string
           format: date
+          nullable: true
           description: The updated start date for the expense blueprint.
         endDate:
           type: string
@@ -798,11 +822,6 @@ components:
       properties:
         type:
           $ref: '#/components/schemas/EstimatedAmountTypeEnum'
-      #      anyOf:
-      #        - $ref: '#/components/schemas/FixedAmount'
-      #        - $ref: '#/components/schemas/RangeAmount'
-      #        - $ref: '#/components/schemas/VarianceAmount'
-      #        - $ref: '#/components/schemas/VariancePercent'
       discriminator:
         propertyName: type
         mapping:
@@ -969,11 +988,10 @@ components:
           description: The name of the income blueprint.
         estimatedAmount:
           $ref: '#/components/schemas/EstimatedAmount'
-        frequency:
-          $ref: '#/components/schemas/FrequencyEnum'
         startDate:
           type: string
           format: date
+          nullable: true
           description: The start date for the income blueprint.
         endDate:
           type: string
@@ -985,7 +1003,6 @@ components:
         - name
         - estimatedAmount
         - frequency
-        - startDate
 
     IncomeBlueprintCreateRequest:
       type: object
@@ -1001,6 +1018,7 @@ components:
         startDate:
           type: string
           format: date
+          nullable: true
           description: The start date for the income blueprint.
         endDate:
           type: string
@@ -1011,7 +1029,6 @@ components:
         - name
         - estimatedAmount
         - frequency
-        - startDate
 
     IncomeBlueprintUpdateRequest:
       type: object
@@ -1027,6 +1044,7 @@ components:
         startDate:
           type: string
           format: date
+          nullable: true
           description: The updated start date for the income blueprint.
         endDate:
           type: string
@@ -1037,7 +1055,6 @@ components:
         - name
         - estimatedAmount
         - frequency
-        - startDate
 
     # Tag Schemas
     TagResponse:

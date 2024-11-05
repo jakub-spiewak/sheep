@@ -1,21 +1,26 @@
 import {Center, Container, Tabs} from "@chakra-ui/react";
-import {TbTags} from "react-icons/tb";
-import {ExpenseBlueprintPage} from "@/pages/ExpenseBlueprintPage.tsx";
-import {TagPage} from "@/pages/TagPage.tsx";
+import {ExpenseSchedulePage} from "@/pages/ExpenseSchedulePage.tsx";
 import {GiPayMoney, GiReceiveMoney} from "react-icons/gi";
 import {IncomeBlueprintPage} from "@/pages/IncomeBlueprintPage.tsx";
 import {BlueprintSummary} from "@/components/expense/blueprint/BlueprintSummary.tsx";
+import {Settings} from "@/pages/Settings.tsx";
 
 export const App = () => {
 
 
     return (
         <Container>
+            <Settings/>
             <BlueprintSummary/>
             <Center w={'full'}>
-                <Tabs.Root defaultValue={"expense-blueprint"} w={'full'}>
+                <Tabs.Root
+                    defaultValue={"expense-schedule"}
+                    w={'full'}
+                    lazyMount
+                    unmountOnExit
+                >
                     <Tabs.List>
-                        <Tabs.Trigger value={"expense-blueprint"}>
+                        <Tabs.Trigger value={"expense-schedule"}>
                             <GiPayMoney/>
                             Expense blueprint
                         </Tabs.Trigger>
@@ -23,19 +28,12 @@ export const App = () => {
                             <GiReceiveMoney/>
                             Income blueprint
                         </Tabs.Trigger>
-                        <Tabs.Trigger value={"tags"}>
-                            <TbTags/>
-                            Tags
-                        </Tabs.Trigger>
                     </Tabs.List>
-                    <Tabs.Content value={"expense-blueprint"}>
-                        <ExpenseBlueprintPage/>
+                    <Tabs.Content value={"expense-schedule"}>
+                        <ExpenseSchedulePage/>
                     </Tabs.Content>
                     <Tabs.Content value={"income-blueprint"}>
                         <IncomeBlueprintPage/>
-                    </Tabs.Content>
-                    <Tabs.Content value={"tags"}>
-                        <TagPage/>
                     </Tabs.Content>
                 </Tabs.Root>
             </Center>

@@ -1,10 +1,10 @@
 import {FrequencyEnum} from "@/redux/generated/redux-api.ts";
 
-interface ExpenseBlueprintFrequencyProps {
+interface ExpenseScheduleFrequencyProps {
     frequency: FrequencyEnum;
 }
 
-export const ExpenseBlueprintFrequency = (props: ExpenseBlueprintFrequencyProps) => {
+export const ExpenseScheduleFrequency = (props: ExpenseScheduleFrequencyProps) => {
     const {frequency} = props;
     switch (frequency) {
         case "DAILY":

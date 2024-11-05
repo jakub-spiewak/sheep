@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {TagResponse} from "@/redux/generated/redux-api.ts";
 import {TagDialog} from "@/components/tag/TagDialog.tsx";
 import {TagTable} from "@/components/tag/TagTable.tsx";
+import {VStack} from "@chakra-ui/react";
 
 export const TagPage = () => {
 
@@ -21,14 +22,14 @@ export const TagPage = () => {
     }, [isTagDialogOpen]);
 
     return (
-        <>
+        <VStack gap={4} >
+            <TagTable onEdit={setTagToEdit}/>
             <TagDialog
                 open={isTagDialogOpen}
                 setOpen={setIsTagDialogOpen}
                 valueToUpdate={tagToEdit}
             />
-            <TagTable onEdit={setTagToEdit}/>
-        </>
+        </VStack>
     )
 
 }

@@ -1,7 +1,10 @@
 import {z, ZodType} from "zod";
 import {
-    EstimatedAmount, ExpenseScheduleCreateRequest,
-    FixedAmount, IncomeBlueprintCreateRequest,
+    EstimatedAmount,
+    ExpenseEntryCreateRequest,
+    ExpenseScheduleCreateRequest,
+    FixedAmount,
+    IncomeBlueprintCreateRequest,
     RangeAmount,
     VarianceAmount,
     VariancePercent
@@ -126,3 +129,10 @@ export const newIncomeBlueprintSchema = z.object({
         path: ["endDate"]
     }) satisfies ZodType<IncomeBlueprintCreateRequest>
 
+export const newExpenseEntrySchema = z.object({
+    name: z.string().min(1, "Name is required").max(50, "Name must be less than 50 characters"),
+    amount: z.number().min(0.01, "Amount must be greater than 0"),
+    date: z.string(),
+    tags: z.array(z.string()),
+    blueprintId: z.string().optional().nullable(),
+}) satisfies ZodType<ExpenseEntryCreateRequest>

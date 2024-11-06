@@ -1,6 +1,7 @@
 import { api } from "../api";
 export const addTagTypes = [
   "expense-schedule",
+  "expense-entry",
   "income-blueprint",
   "tag",
 ] as const;
@@ -98,6 +99,15 @@ const injectedRtkApi = api
           method: "DELETE",
         }),
         invalidatesTags: ["expense-schedule"],
+      }),
+      getExpenseEntriesByScheduleId: build.query<
+        GetExpenseEntriesByScheduleIdApiResponse,
+        GetExpenseEntriesByScheduleIdApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/expense-schedule/${queryArg.blueprintId}/entries`,
+        }),
+        providesTags: ["expense-entry"],
       }),
       getIncomeEntries: build.query<
         GetIncomeEntriesApiResponse,
@@ -336,6 +346,12 @@ export type DeleteExpenseScheduleApiArg = {
   /** The unique identifier of the blueprint. */
   blueprintId: string;
 };
+export type GetExpenseEntriesByScheduleIdApiResponse =
+  /** status 200 Expenses entries details retrieved successfully. */ ExpenseEntryResponse[];
+export type GetExpenseEntriesByScheduleIdApiArg = {
+  /** The unique identifier of the blueprint. */
+  blueprintId: string;
+};
 export type GetIncomeEntriesApiResponse =
   /** status 200 A list of income entries retrieved successfully. */ IncomeEntryResponse[];
 export type GetIncomeEntriesApiArg = void;
@@ -467,8 +483,8 @@ export type ExpenseEntryResponse = {
   amount: number;
   /** The date when the expense was incurred. */
   date: string;
-  /** A brief description of the expense. */
-  description?: string;
+  /** The name of the expense entry. */
+  name?: string;
   /** The ID of the associated expense blueprint, if any. */
   blueprintId?: string | null;
   /** A list of tag IDs associated with the expense. */
@@ -480,7 +496,7 @@ export type ExpenseEntryCreateRequest = {
   /** The date when the expense was incurred. */
   date: string;
   /** A brief description of the expense. */
-  description?: string;
+  name?: string;
   /** The ID of the associated expense blueprint, if any. */
   blueprintId?: string | null;
   /** A list of tag IDs to categorize the expense. */
@@ -492,7 +508,7 @@ export type ExpenseEntryUpdateRequest = {
   /** The updated date when the expense was incurred. */
   date?: string;
   /** The updated description of the expense. */
-  description?: string;
+  name?: string;
   /** The updated ID of the associated expense blueprint, if any. */
   blueprintId?: string | null;
   /** The updated list of tag IDs associated with the expense. */
@@ -721,6 +737,7 @@ export const {
   useGetExpenseScheduleByIdQuery,
   useUpdateExpenseScheduleMutation,
   useDeleteExpenseScheduleMutation,
+  useGetExpenseEntriesByScheduleIdQuery,
   useGetIncomeEntriesQuery,
   useCreateIncomeEntryMutation,
   useGetIncomeEntryByIdQuery,

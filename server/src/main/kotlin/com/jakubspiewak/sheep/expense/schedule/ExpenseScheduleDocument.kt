@@ -1,4 +1,4 @@
-package com.jakubspiewak.sheep.expense
+package com.jakubspiewak.sheep.expense.schedule
 
 import com.jakubspiewak.sheep.common.toResponse
 import com.jakubspiewak.sheep.generated.model.EstimatedAmount
@@ -8,7 +8,7 @@ import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
-@Document(collection = "expenseBlueprint")
+@Document(collection = "expenseSchedule")
 data class ExpenseScheduleDocument(
     @Id
     var id: ObjectId,

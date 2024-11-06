@@ -188,6 +188,28 @@ paths:
         '404':
           description: Expense blueprint not found.
 
+  /expense-schedule/{blueprintId}/entries:
+    parameters:
+      - $ref: '#/components/parameters/blueprintId'
+    get:
+      operationId: getExpenseEntriesByScheduleId
+      summary: Retrieve a Expense Entries by parent schedule id
+      description: |
+        Fetch a list of expense entries associated with the specified expense blueprint. This will return all entries that are generated based on the specified template.
+      tags:
+        - expense-entry
+      responses:
+        '200':
+          description: Expenses entries details retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExpenseEntryResponse'
+        '404':
+          description: Expense blueprint not found.
+ 
   /income-entry:
     get:
       operationId: getIncomeEntries
@@ -645,15 +667,15 @@ components:
           description: Unique identifier of the expense entry.
         amount:
           type: number
-          format: float
+          format: double
           description: The amount of the expense.
         date:
           type: string
           format: date
           description: The date when the expense was incurred.
-        description:
+        name:
           type: string
-          description: A brief description of the expense.
+          description: The name of the expense entry.
         blueprintId:
           type: string
           nullable: true
@@ -674,13 +696,13 @@ components:
       properties:
         amount:
           type: number
-          format: float
+          format: double
           description: The amount of the expense.
         date:
           type: string
           format: date
           description: The date when the expense was incurred.
-        description:
+        name:
           type: string
           description: A brief description of the expense.
         blueprintId:
@@ -702,13 +724,13 @@ components:
       properties:
         amount:
           type: number
-          format: float
+          format: double
           description: The updated amount of the expense.
         date:
           type: string
           format: date
           description: The updated date when the expense was incurred.
-        description:
+        name:
           type: string
           description: The updated description of the expense.
         blueprintId:
@@ -841,7 +863,7 @@ components:
       properties:
         amount:
           type: number
-          format: float
+          format: double
           description: The fixed amount value.
       required:
         - type
@@ -855,11 +877,11 @@ components:
       properties:
         min:
           type: number
-          format: float
+          format: double
           description: The minimum estimated amount.
         max:
           type: number
-          format: float
+          format: double
           description: The maximum estimated amount.
       required:
         - type
@@ -874,11 +896,11 @@ components:
       properties:
         amount:
           type: number
-          format: float
+          format: double
           description: The base amount.
         variance:
           type: number
-          format: float
+          format: double
           description: The variance to apply to the base amount.
       required:
         - type
@@ -893,11 +915,11 @@ components:
       properties:
         amount:
           type: number
-          format: float
+          format: double
           description: The base amount.
         variancePercent:
           type: number
-          format: float
+          format: double
           description: The variance percentage to apply to the base amount.
       required:
         - type
@@ -914,7 +936,7 @@ components:
           description: Unique identifier of the income entry.
         amount:
           type: number
-          format: float
+          format: double
           description: The amount of the income.
         date:
           type: string
@@ -938,7 +960,7 @@ components:
       properties:
         amount:
           type: number
-          format: float
+          format: double
           description: The amount of the income.
         date:
           type: string
@@ -961,7 +983,7 @@ components:
       properties:
         amount:
           type: number
-          format: float
+          format: double
           description: The updated amount of the income.
         date:
           type: string
@@ -1098,15 +1120,15 @@ components:
       properties:
         totalIncome:
           type: number
-          format: float
+          format: double
           description: The total income during the specified period.
         totalExpenses:
           type: number
-          format: float
+          format: double
           description: The total expenses during the specified period.
         netBalance:
           type: number
-          format: float
+          format: double
           description: The net balance calculated as total income minus total expenses.
       required:
         - totalIncome
@@ -1125,7 +1147,7 @@ components:
           description: The name of the tag.
         totalAmount:
           type: number
-          format: float
+          format: double
           description: The total amount of expenses associated with the tag.
       required:
         - tagId
@@ -1144,7 +1166,7 @@ components:
           description: The name of the income source.
         totalAmount:
           type: number
-          format: float
+          format: double
           description: The total amount of income associated with the source.
       required:
         - sourceId
@@ -1167,7 +1189,7 @@ components:
                 description: The date of the cash flow data point.
               netBalance:
                 type: number
-                format: float
+                format: double
                 description: The net balance on the specified date.
             required:
               - date
@@ -1181,15 +1203,15 @@ components:
       properties:
         projectedIncome:
           type: number
-          format: float
+          format: double
           description: The projected total income for the future period.
         projectedExpenses:
           type: number
-          format: float
+          format: double
           description: The projected total expenses for the future period.
         projectedNetBalance:
           type: number
-          format: float
+          format: double
           description: The projected net balance calculated as projected income minus projected expenses.
         details:
           type: array
@@ -1203,15 +1225,15 @@ components:
                 description: The date of the projection.
               income:
                 type: number
-                format: float
+                format: double
                 description: The projected income on the specified date.
               expenses:
                 type: number
-                format: float
+                format: double
                 description: The projected expenses on the specified date.
               netBalance:
                 type: number
-                format: float
+                format: double
                 description: The projected net balance on the specified date.
             required:
               - date

@@ -1,6 +1,8 @@
-package com.jakubspiewak.sheep.expense
+package com.jakubspiewak.sheep.expense.schedule
 
+import com.jakubspiewak.sheep.expense.entry.ExpenseEntryRepository
 import com.jakubspiewak.sheep.generated.api.ExpenseScheduleApiDelegate
+import com.jakubspiewak.sheep.generated.model.ExpenseEntryResponse
 import com.jakubspiewak.sheep.generated.model.ExpenseScheduleCreateRequest
 import com.jakubspiewak.sheep.generated.model.ExpenseScheduleResponse
 import com.jakubspiewak.sheep.generated.model.ExpenseScheduleUpdateRequest
@@ -9,7 +11,10 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class ExpenseScheduleApiDelegateImpl(private val repository: ExpenseScheduleRepository) : ExpenseScheduleApiDelegate {
+class ExpenseScheduleApiDelegateImpl(
+    private val repository: ExpenseScheduleRepository,
+    private val entryRepository: ExpenseEntryRepository
+) : ExpenseScheduleApiDelegate {
     override fun createExpenseSchedule(expenseScheduleCreateRequest: ExpenseScheduleCreateRequest): ResponseEntity<ExpenseScheduleResponse> {
         val expenseBlueprintDocument = ExpenseScheduleDocument(
             id = ObjectId(),
@@ -30,6 +35,16 @@ class ExpenseScheduleApiDelegateImpl(private val repository: ExpenseScheduleRepo
         val objectId = ObjectId(blueprintId)
         repository.deleteById(objectId)
         return ResponseEntity.noContent().build()
+    }
+
+    override fun getExpenseEntriesByScheduleId(blueprintId: String): ResponseEntity<List<ExpenseEntryResponse>> {
+        val objectId = ObjectId(blueprintId)
+        val optionalBlueprint = repository.findById(objectId)
+        if (optionalBlueprint.isEmpty) {
+            return ResponseEntity.notFound().build()
+        }
+        val expenseEntries = entryRepository.findByBlueprintIdIs(objectId).map { it.toResponse() }
+        return ResponseEntity.ok(expenseEntries)
     }
 
     override fun getExpenseScheduleById(blueprintId: String): ResponseEntity<ExpenseScheduleResponse> {

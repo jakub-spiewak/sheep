@@ -1,6 +1,6 @@
 package com.jakubspiewak.sheep.tag
 
-import com.jakubspiewak.sheep.expense.ExpenseScheduleRepository
+import com.jakubspiewak.sheep.expense.schedule.ExpenseScheduleRepository
 import com.jakubspiewak.sheep.generated.api.TagApiDelegate
 import com.jakubspiewak.sheep.generated.model.TagCreateRequest
 import com.jakubspiewak.sheep.generated.model.TagResponse

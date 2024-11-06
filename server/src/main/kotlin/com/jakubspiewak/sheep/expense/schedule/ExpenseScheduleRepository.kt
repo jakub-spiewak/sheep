@@ -1,4 +1,4 @@
-package com.jakubspiewak.sheep.expense
+package com.jakubspiewak.sheep.expense.schedule
 
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.repository.MongoRepository

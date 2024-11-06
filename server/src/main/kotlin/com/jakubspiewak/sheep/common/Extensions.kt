@@ -2,7 +2,7 @@ package com.jakubspiewak.sheep.common
 
 import com.jakubspiewak.sheep.generated.model.*
 
-public fun EstimatedAmount.toResponse(): EstimatedAmount {
+fun EstimatedAmount.toResponse(): EstimatedAmount {
     return when (this.type) {
 
         EstimatedAmountTypeEnum.FIXED -> {

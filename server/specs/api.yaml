@@ -16,6 +16,42 @@ paths:
       summary: Retrieve All Expense Entries
       description: |
         Fetch a list of all expense entries recorded in the system. This endpoint supports retrieving expenses without any filters.
+      parameters:
+        - name: month
+          in: query
+          required: false
+          schema:
+            type: string
+            pattern: mm-yyyy
+        - name: scheduleId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: anyOfTags
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: allOfTags
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: A list of expense entries retrieved successfully.
@@ -209,7 +245,7 @@ paths:
                   $ref: '#/components/schemas/ExpenseEntryResponse'
         '404':
           description: Expense blueprint not found.
- 
+
   /income-entry:
     get:
       operationId: getIncomeEntries
@@ -485,9 +521,9 @@ paths:
   /report/summary:
     get:
       operationId: getFinancialSummary
-#      tags:
-#        - blueprint-expense
-#        - blueprint-income
+      #      tags:
+      #        - blueprint-expense
+      #        - blueprint-income
       summary: Retrieve Financial Summary
       description: |
         Generate a financial summary over a specified period, including total income, total expenses, and net balance.

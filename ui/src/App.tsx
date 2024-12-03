@@ -5,9 +5,13 @@ import {IncomeBlueprintPage} from "@/pages/IncomeBlueprintPage.tsx";
 import {BlueprintSummary} from "@/components/expense/blueprint/BlueprintSummary.tsx";
 import {Settings} from "@/pages/Settings.tsx";
 import {ExpenseEntryPage} from "@/pages/ExpenseEntryPage.tsx";
+import {useAppDispatch, useAppSelector} from "@/redux/store.ts";
+import {setCurrentPage} from "@/redux/slices/currentPageSlice.ts";
 
 export const App = () => {
 
+    const currentPage: string = useAppSelector(state => state.currentPage.page);
+    const dispatch = useAppDispatch();
 
     return (
         <Container>
@@ -19,11 +23,13 @@ export const App = () => {
                     w={'full'}
                     lazyMount
                     unmountOnExit
+                    value={currentPage}
+                    onValueChange={e => dispatch(setCurrentPage(e.value))}
                 >
                     <Tabs.List>
                         <Tabs.Trigger value={"expense-schedule"}>
                             <GiPayMoney/>
-                            Expense blueprint
+                            Expense schedules
                         </Tabs.Trigger>
                         <Tabs.Trigger value={"expense-entry"}>
                             <GiTakeMyMoney/>

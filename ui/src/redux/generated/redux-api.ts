@@ -15,7 +15,17 @@ const injectedRtkApi = api
         GetExpenseEntriesApiResponse,
         GetExpenseEntriesApiArg
       >({
-        query: () => ({ url: `/expense-entry` }),
+        query: (queryArg) => ({
+          url: `/expense-entry`,
+          params: {
+            month: queryArg.month,
+            scheduleId: queryArg.scheduleId,
+            anyOfTags: queryArg.anyOfTags,
+            allOfTags: queryArg.allOfTags,
+            sort: queryArg.sort,
+            order: queryArg.order,
+          },
+        }),
       }),
       createExpenseEntry: build.mutation<
         CreateExpenseEntryApiResponse,
@@ -292,7 +302,14 @@ const injectedRtkApi = api
 export { injectedRtkApi as enhancedApi };
 export type GetExpenseEntriesApiResponse =
   /** status 200 A list of expense entries retrieved successfully. */ ExpenseEntryResponse[];
-export type GetExpenseEntriesApiArg = void;
+export type GetExpenseEntriesApiArg = {
+  month?: string;
+  scheduleId?: string;
+  anyOfTags?: string[];
+  allOfTags?: string[];
+  sort?: string;
+  order?: string;
+};
 export type CreateExpenseEntryApiResponse =
   /** status 201 Expense entry created successfully. */ ExpenseEntryResponse;
 export type CreateExpenseEntryApiArg = {

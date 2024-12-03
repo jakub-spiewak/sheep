@@ -145,7 +145,10 @@ export const ExpenseEntryDialog = (props: ExpenseEntryDialogProps) => {
     }, [scheduleId, selectedExpenseSchedule, setValue, valueToUpdate]);
 
     const onSubmit = (data: ExpenseEntryCreateRequest) => {
-        if (valueToUpdate) {
+        if (data.blueprintId === '') {
+            delete data.blueprintId
+        }
+        if (valueToUpdate?.id) {
             updateExpenseEntry({expenseEntryUpdateRequest: data, entryId: valueToUpdate.id})
         } else {
             createExpenseEntry({expenseEntryCreateRequest: data})
@@ -224,7 +227,7 @@ export const ExpenseEntryDialog = (props: ExpenseEntryDialogProps) => {
                             </Field>
                             <Field
                                 label={"Date"}
-                                helperText={"When the expense is occur"}
+                                helperText={"Date on which the expense occurred"}
                                 invalid={!!errors.date}
                                 errorText={errors.date?.message}
                             >
